@@ -8,9 +8,9 @@ import {
   Interaction,
   REST,
   Routes,
-  CommandInteraction,
 } from "discord.js";
 import dotenv from "dotenv";
+import { scheduleBirthdays } from "./functions/birthday";
 dotenv.config();
 
 // SOME CONSTANTS
@@ -43,6 +43,8 @@ const commands = [
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.on("ready", async () => {
   console.log(`Logged in as ${client.user?.tag}!`);
+  // schedule birthdays
+  scheduleBirthdays(client);
   try {
     console.log("Started refreshing application (/) commands.");
 
@@ -55,12 +57,12 @@ client.on("ready", async () => {
   }
 });
 
-// Takes all media input from head channel
+// Takes in all messages sent in channels and dms
 client.on("messageCreate", async (message: Message): Promise<any> => {
   if (message.author.bot) return;
 });
 
-// commands used by users who want to follow or un-follow posts
+// slash commands used by users in channels and dms
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
   if (interaction.channel instanceof TextChannel) {
