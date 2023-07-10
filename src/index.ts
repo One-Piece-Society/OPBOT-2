@@ -40,6 +40,14 @@ const commands = [
   {
     name: "post",
     description: "Schedule a post to be sent in a specific channel",
+    options: [
+      {
+        name: "url",
+        description: "The message link you wish to post",
+        type: 3,
+        required: true,
+      },
+    ],
   },
 ];
 
