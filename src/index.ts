@@ -37,6 +37,10 @@ const commands = [
     name: "about",
     description: "What does this bot do?",
   },
+  {
+    name: "post",
+    description: "Schedule a post to be sent in a specific channel",
+  },
 ];
 
 // When the client is ready, run this code (only once)
@@ -73,6 +77,9 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     await interaction.reply(
       "I am a bot made for UNSW One Piece Society, Looking for new feature requests here: https://github.com/One-Piece-Society/OPBOT-2/issues ✨"
     );
+  }
+  if (interaction.commandName === "post") {
+    await interaction.reply("Post using msg URL in progress");
   }
 });
 
