@@ -13,6 +13,8 @@ import {
 import dotenv from "dotenv";
 dotenv.config();
 
+import { createPost } from "./postFunctions";
+
 // SOME CONSTANTS
 const TOKEN = process.env?.TOKEN;
 const CLIENT_ID = process.env?.CLIENT_ID;
@@ -87,7 +89,7 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     );
   }
   if (interaction.commandName === "post") {
-    await interaction.reply("Post using msg URL in progress");
+    createPost(interaction as CommandInteraction & { channel: TextChannel });
   }
 });
 
