@@ -49,6 +49,24 @@ const commands = [
         type: 3,
         required: true,
       },
+      {
+        name: "channel",
+        description: "The message link you wish to post",
+        type: 7,
+        required: true,
+      },
+      {
+        name: "time",
+        description: "A specified time using HH:MM",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "day",
+        description: "A specified day using day number (eg. 23)",
+        type: 3,
+        required: false,
+      },
     ],
   },
 ];
