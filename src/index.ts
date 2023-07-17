@@ -96,7 +96,9 @@ client.on("messageCreate", async (message: Message): Promise<any> => {
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
   if (interaction.channel instanceof TextChannel) {
-    // do text channel functions
+    if (interaction.commandName === "post") {
+      createPost(client, interaction as CommandInteraction);
+    }
   }
   if (interaction.channel instanceof DMChannel) {
     // do DM channel functions
@@ -105,9 +107,6 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     await interaction.reply(
       "I am a bot made for UNSW One Piece Society, Looking for new feature requests here: https://github.com/One-Piece-Society/OPBOT-2/issues ✨"
     );
-  }
-  if (interaction.commandName === "post") {
-    createPost(client, interaction as CommandInteraction);
   }
 });
 
