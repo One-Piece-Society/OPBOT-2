@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, Message, TextChannel } from "discord.js";
+import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
 
 export const createPost = async (
   client: Client<boolean>,
@@ -27,9 +27,13 @@ export const createPost = async (
     });
   }
 
+  // Generate and get all attachments to send
+  const attachments = msg?.attachments.map(
+    (attachment) => new AttachmentBuilder(attachment.url)
+  );
+
   // Fetch ChannelID to send message
   const channelID = interaction.options.get("channel")?.channel?.id;
-  console.log(channelID);
 
   if (typeof channelID === "undefined") {
     return interaction.reply({
@@ -49,5 +53,9 @@ export const createPost = async (
   }
 
   // Output message to be sent
-  return ch.send({ content: msg?.content });
+  interaction.reply({
+    content: "Message has been sent",
+    ephemeral: true,
+  });
+  return ch.send({ content: msg?.content, files: attachments });
 };
