@@ -1,5 +1,7 @@
 import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
 
+const sleep = (ms: number | undefined) => new Promise((r) => setTimeout(r, ms));
+
 export const createPost = async (
   client: Client<boolean>,
   interaction: CommandInteraction
@@ -55,6 +57,7 @@ export const createPost = async (
     });
   }
 
+  // Get delay value from args
   const delayStr = interaction.options.get("delay")?.value;
   let delay: number;
   if (typeof delayStr === "undefined") {
@@ -71,10 +74,19 @@ export const createPost = async (
   }
 
   // Output message to be sent
-  interaction.reply({
-    content: "Message has been sent",
-    ephemeral: true,
-  });
+  if (delay <= 0) {
+    interaction.reply({
+      content: "Message has been sent",
+      ephemeral: true,
+    });
+  } else {
+    interaction.reply({
+      content: "Message will be sent in " + delay + " minutes",
+      ephemeral: true,
+    });
+    await sleep(delay * 60000);
+  }
+
   const sentMsg = await ch.send({ content: msg?.content, files: attachments });
 
   // Add optional reactions (note reactions must be server specific)
