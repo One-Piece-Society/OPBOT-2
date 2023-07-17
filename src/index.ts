@@ -56,17 +56,11 @@ const commands = [
         required: true,
       },
       {
-        name: "time",
-        description: "A specified time using HH:MM",
+        name: "delay",
+        description: "A time delay of n minutes",
         type: 3,
         required: false,
       },
-      // {
-      //   name: "day",
-      //   description: "A specified day using day number (eg. 23)",
-      //   type: 3,
-      //   required: false,
-      // },
     ],
   },
 ];

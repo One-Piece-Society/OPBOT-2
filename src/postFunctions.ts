@@ -55,6 +55,21 @@ export const createPost = async (
     });
   }
 
+  const delayStr = interaction.options.get("delay")?.value;
+  let delay: number;
+  if (typeof delayStr === "undefined") {
+    delay = 0;
+  } else {
+    delay = parseInt(delayStr.toString());
+  }
+
+  if (Number.isNaN(delay) || delay < 0) {
+    return interaction.reply({
+      content: "Invalid delay amount: Time must be a valid positive number",
+      ephemeral: true,
+    });
+  }
+
   // Output message to be sent
   interaction.reply({
     content: "Message has been sent",
