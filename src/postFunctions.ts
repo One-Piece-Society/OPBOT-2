@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, TextChannel } from "discord.js";
+import { Client, CommandInteraction, Message, TextChannel } from "discord.js";
 
 export const createPost = async (
   client: Client<boolean>,
@@ -16,7 +16,15 @@ export const createPost = async (
     });
   }
 
-  const msg = await interaction.channel?.messages.fetch(msgID);
+  let msg;
+  try {
+    msg = await interaction.channel?.messages.fetch(msgID);
+  } catch (e) {
+    return interaction.reply({
+      content: "Invalid Message URL: Check if URL is valid first",
+      ephemeral: true,
+    });
+  }
 
   // Return intended message
   return interaction.reply({ content: msg?.content });
