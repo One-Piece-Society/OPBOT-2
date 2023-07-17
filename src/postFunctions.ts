@@ -16,6 +16,7 @@ export const createPost = async (
     });
   }
 
+  // Fetch message
   let msg;
   try {
     msg = await interaction.channel?.messages.fetch(msgID);
@@ -26,6 +27,27 @@ export const createPost = async (
     });
   }
 
-  // Return intended message
-  return interaction.reply({ content: msg?.content });
+  // Fetch ChannelID to send message
+  const channelID = interaction.options.get("channel")?.channel?.id;
+  console.log(channelID);
+
+  if (typeof channelID === "undefined") {
+    return interaction.reply({
+      content: "Invalid Channel ID: Check Bot has access to the channel",
+      ephemeral: true,
+    });
+  }
+
+  // Fetch Channel to send message
+  const ch = interaction.guild?.channels.cache.get(channelID);
+
+  if (!ch?.isTextBased()) {
+    return interaction.reply({
+      content: "Invalid Channel: Cannot send to VC",
+      ephemeral: true,
+    });
+  }
+
+  // Output message to be sent
+  return ch.send({ content: msg?.content });
 };
