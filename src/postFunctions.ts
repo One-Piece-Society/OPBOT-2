@@ -9,7 +9,11 @@ export const createPost = async (
   const msgID = url?.toString().match(/\d+/g)?.[2];
 
   if (typeof msgID === "undefined") {
-    throw new Error("ID for old offer is undefined");
+    return interaction.reply({
+      content:
+        "Invalid Message URL: Please ensure you are in the same channel as the message you want to send",
+      ephemeral: true,
+    });
   }
 
   const msg = await interaction.channel?.messages.fetch(msgID);
