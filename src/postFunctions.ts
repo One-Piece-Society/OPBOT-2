@@ -32,6 +32,9 @@ export const createPost = async (
     (attachment) => new AttachmentBuilder(attachment.url)
   );
 
+  // Get a list of all reactions used
+  const reactions = msg?.reactions.cache;
+
   // Fetch ChannelID to send message
   const channelID = interaction.options.get("channel")?.channel?.id;
 
@@ -57,5 +60,17 @@ export const createPost = async (
     content: "Message has been sent",
     ephemeral: true,
   });
-  return ch.send({ content: msg?.content, files: attachments });
+  const sentMsg = await ch.send({ content: msg?.content, files: attachments });
+
+  // Add optional reactions (note reactions must be server specific)
+  if (typeof reactions === "undefined") {
+    return;
+  }
+  for (const react of reactions.keys()) {
+    try {
+      await sentMsg.react(react);
+    } catch (error) {
+      continue;
+    }
+  }
 };
