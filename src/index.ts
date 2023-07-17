@@ -61,12 +61,12 @@ const commands = [
         type: 3,
         required: false,
       },
-      {
-        name: "day",
-        description: "A specified day using day number (eg. 23)",
-        type: 3,
-        required: false,
-      },
+      // {
+      //   name: "day",
+      //   description: "A specified day using day number (eg. 23)",
+      //   type: 3,
+      //   required: false,
+      // },
     ],
   },
 ];
@@ -107,7 +107,7 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     );
   }
   if (interaction.commandName === "post") {
-    createPost(interaction as CommandInteraction & { channel: TextChannel });
+    createPost(client, interaction as CommandInteraction);
   }
 });
 
