@@ -37,6 +37,10 @@ const client = new Client({
 
 const commands = [
   {
+    name: "ping",
+    description: "check if bot is working",
+  },
+  {
     name: "about",
     description: "What does this bot do?",
   },
@@ -102,6 +106,9 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   }
 
   // non dm or channel specific commands go here:
+  if (interaction.commandName === "ping") {
+    await interaction.reply("Pong!");
+  }
   if (interaction.commandName === "about") {
     await interaction.reply(
       "I am a bot made for UNSW One Piece Society, Looking for new feature requests here: https://github.com/One-Piece-Society/OPBOT-2/issues ✨"
