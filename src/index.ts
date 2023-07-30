@@ -14,6 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
+import { isAdmin } from "./util";
 
 // SOME CONSTANTS
 const TOKEN = process.env?.TOKEN;
@@ -89,14 +90,18 @@ client.on("messageCreate", async (message: Message): Promise<any> => {
 // commands used by users who want to follow or un-follow posts
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
+
   if (interaction.channel instanceof TextChannel) {
-    if (interaction.commandName === "post") {
+    if (interaction.commandName === "post" && isAdmin(interaction)) {
       createPost(client, interaction as CommandInteraction);
     }
   }
+
   if (interaction.channel instanceof DMChannel) {
     // do DM channel functions
   }
+
+  // non dm or channel specific commands go here:
   if (interaction.commandName === "about") {
     await interaction.reply(
       "I am a bot made for UNSW One Piece Society, Looking for new feature requests here: https://github.com/One-Piece-Society/OPBOT-2/issues ✨"
