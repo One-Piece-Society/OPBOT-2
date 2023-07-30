@@ -24,7 +24,8 @@ export const createPost = async (
     msg = await interaction.channel?.messages.fetch(msgID);
   } catch (e) {
     return interaction.reply({
-      content: "Invalid Message URL: Check if URL is valid first",
+      content:
+        "Invalid Message URL: Check if URL is valid first, try running the command in the channel of the message you want to send",
       ephemeral: true,
     });
   }
