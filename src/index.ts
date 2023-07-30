@@ -13,6 +13,8 @@ import {
 import dotenv from "dotenv";
 dotenv.config();
 
+import { createPost } from "./postFunctions";
+
 // SOME CONSTANTS
 const TOKEN = process.env?.TOKEN;
 const CLIENT_ID = process.env?.CLIENT_ID;
@@ -36,6 +38,30 @@ const commands = [
   {
     name: "about",
     description: "What does this bot do?",
+  },
+  {
+    name: "post",
+    description: "Schedule a post to be sent in a specific channel",
+    options: [
+      {
+        name: "url",
+        description: "The message link you wish to post",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "channel",
+        description: "The message link you wish to post",
+        type: 7,
+        required: true,
+      },
+      {
+        name: "delay",
+        description: "A time delay of n minutes",
+        type: 3,
+        required: false,
+      },
+    ],
   },
 ];
 
@@ -64,7 +90,9 @@ client.on("messageCreate", async (message: Message): Promise<any> => {
 client.on("interactionCreate", async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
   if (interaction.channel instanceof TextChannel) {
-    // do text channel functions
+    if (interaction.commandName === "post") {
+      createPost(client, interaction as CommandInteraction);
+    }
   }
   if (interaction.channel instanceof DMChannel) {
     // do DM channel functions
