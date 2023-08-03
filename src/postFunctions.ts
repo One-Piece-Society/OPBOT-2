@@ -1,4 +1,5 @@
 import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
+import { parseMessage } from "./util";
 
 const sleep = (ms: number | undefined) => new Promise((r) => setTimeout(r, ms));
 
@@ -88,7 +89,10 @@ export const createPost = async (
     await sleep(delay * 60000);
   }
 
-  const sentMsg = await ch.send({ content: msg?.content, files: attachments });
+  const sentMsg = await ch.send({
+    content: parseMessage(msg?.content),
+    files: attachments,
+  });
 
   // Add optional reactions (note reactions must be server specific)
   if (typeof reactions === "undefined") {
