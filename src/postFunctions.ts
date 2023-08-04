@@ -81,7 +81,6 @@ export const createPost = async (
       ephemeral: true,
     });
   }
-  console.log(delay + " = delay");
 
   // Output message to be sent
   if (delay <= 0) {
