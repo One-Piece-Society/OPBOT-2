@@ -66,6 +66,12 @@ const commands = [
         type: 3,
         required: false,
       },
+      {
+        name: "datetime",
+        description: `The date and time for the scheduled post in "YYYYMMDDHHmm" 24 hour time format `,
+        type: 4, // Representing the date-time format
+        required: false,
+      },
     ],
   },
 ];

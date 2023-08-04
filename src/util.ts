@@ -5,6 +5,7 @@ import {
   MessageContextMenuCommandInteraction,
   UserContextMenuCommandInteraction,
 } from "discord.js";
+import { differenceInMinutes } from "date-fns";
 
 export const isAdmin = (
   interaction:
@@ -31,4 +32,27 @@ export const parseMessage = (message: string | undefined) => {
   if (!message) return "";
   message = message.replace("[EVERYONE]", "@everyone");
   return message;
+};
+
+export const parseAndCalculateDifference = (dateTimeInput: number): number => {
+  // YYYYMMDDHHMM  date format
+  const dateTimeInputStr = dateTimeInput.toString();
+  const year = parseInt(dateTimeInputStr.slice(0, 4));
+  const month = parseInt(dateTimeInputStr.slice(4, 6)) - 1; // month is zero-based in JavaScript Date
+  const day = parseInt(dateTimeInputStr.slice(6, 8));
+  const hour = parseInt(dateTimeInputStr.slice(8, 10));
+  const minute = parseInt(dateTimeInputStr.slice(10, 12));
+
+  const inputDate = new Date(year, month, day, hour, minute);
+  if (isNaN(inputDate.getTime())) {
+    return 0; // Invalid date input
+  }
+
+  const currentDate = new Date();
+  if (inputDate <= currentDate) {
+    return 0; // Date is not in the future
+  }
+
+  const difference = differenceInMinutes(inputDate, currentDate);
+  return difference;
 };
