@@ -15,9 +15,9 @@ export const isAdmin = (
   const adminCheck = (
     interaction.member?.roles as GuildMemberRoleManager
   ).cache.some(
-    (role) => true
-    // id's for admins roles
-    //   role.id === "949689658789490688" || role.id === "1000265498639994951"
+    (role) =>
+      // id's for admins roles
+      role.id === "949689658789490688" || role.id === "1000265498639994951"
   );
 
   if (!adminCheck) {
