@@ -1,5 +1,5 @@
 import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
-import { parseMessage } from "./util";
+import { parseAndCalculateDifference, parseMessage } from "./util";
 
 const sleep = (ms: number | undefined) => new Promise((r) => setTimeout(r, ms));
 
@@ -66,6 +66,13 @@ export const createPost = async (
     delay = 0;
   } else {
     delay = parseInt(delayStr.toString());
+  }
+
+  // get Date and Time from args
+  const dateTime = interaction.options.get("datetime")?.value;
+  if (typeof dateTime === "number") {
+    // if user provides datetime, use dateTime difference as delay instead
+    delay = parseAndCalculateDifference(dateTime);
   }
 
   if (Number.isNaN(delay) || delay < 0) {
