@@ -35,13 +35,13 @@ export const parseMessage = (message: string | undefined) => {
 };
 
 export const parseAndCalculateDifference = (dateTimeInput: number): number => {
-  // YYYYMMDDHHMM  date format
+  // HHmmDDMMYYYY  date format
   const dateTimeInputStr = dateTimeInput.toString();
-  const year = parseInt(dateTimeInputStr.slice(0, 4));
-  const month = parseInt(dateTimeInputStr.slice(4, 6)) - 1; // month is zero-based in JavaScript Date
-  const day = parseInt(dateTimeInputStr.slice(6, 8));
-  const hour = parseInt(dateTimeInputStr.slice(8, 10));
-  const minute = parseInt(dateTimeInputStr.slice(10, 12));
+  const hour = parseInt(dateTimeInputStr.slice(0, 2));
+  const minute = parseInt(dateTimeInputStr.slice(2, 4));
+  const day = parseInt(dateTimeInputStr.slice(4, 6));
+  const month = parseInt(dateTimeInputStr.slice(6, 8)) - 1; // month is zero-based in JavaScript Date
+  const year = parseInt(dateTimeInputStr.slice(8, 12));
 
   const inputDate = new Date(year, month, day, hour, minute);
   if (isNaN(inputDate.getTime())) {
