@@ -14,6 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
+import { createEvent, removeEvent, getEvents } from "./dbFunctions";
 import { isAdmin } from "./util";
 
 // SOME CONSTANTS
@@ -74,6 +75,61 @@ const commands = [
       },
     ],
   },
+  {
+    name: "event-info",
+    description: "See a list of most recent events",
+    options: [
+      {
+        name: "Start",
+        description: "Show result starting from the nth entry (default 1st entry)",
+        type: 3,
+        required: false,
+      },
+    ]
+  },
+  {
+    name: "add-event",
+    description: "Schedule a post to be sent in a specific channel",
+    options: [
+      // TODO FIX REQUIRED FOR VARS USAGE
+      {
+        name: "url",
+        description: " ",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "channel",
+        description: "The message link you wish to post",
+        type: 7,
+        required: true,
+      },
+      {
+        name: "delay",
+        description: "A time delay of n minutes",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "datetime",
+        description: `The date and time for the scheduled post in "HHmmDDMMYYYY" 24 hour time format`,
+        type: 4, // Representing the date-time format
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "remove-event",
+    description: "Remove an event based on an id",
+    options: [
+      {
+        name: "id",
+        description: "id of event to remove",
+        type: 3,
+        required: true,
+      },
+    ],
+  },
 ];
 
 // When the client is ready, run this code (only once)
@@ -104,6 +160,21 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   if (interaction.channel instanceof TextChannel) {
     if (interaction.commandName === "post" && isAdmin(interaction)) {
       createPost(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName === "add-event" &&
+      isAdmin(interaction)
+    ) {
+      createEvent(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName === "event-info" &&
+      isAdmin(interaction)
+    ) {
+      getEvents(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName === "remove-event" &&
+      isAdmin(interaction)
+    ) {
+      removeEvent(client, interaction as CommandInteraction);
     }
   }
 
