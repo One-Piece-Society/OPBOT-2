@@ -80,12 +80,13 @@ const commands = [
     description: "See a list of most recent events",
     options: [
       {
-        name: "Start",
-        description: "Show result starting from the nth entry (default 1st entry)",
+        name: "start",
+        description:
+          "Show result starting from the nth entry (default 1st entry)",
         type: 3,
         required: false,
       },
-    ]
+    ],
   },
   {
     name: "add-event",
@@ -94,7 +95,7 @@ const commands = [
       // TODO FIX REQUIRED FOR VARS USAGE
       {
         name: "url",
-        description: " ",
+        description: "nasud",
         type: 3,
         required: true,
       },
@@ -108,12 +109,6 @@ const commands = [
         name: "delay",
         description: "A time delay of n minutes",
         type: 3,
-        required: false,
-      },
-      {
-        name: "datetime",
-        description: `The date and time for the scheduled post in "HHmmDDMMYYYY" 24 hour time format`,
-        type: 4, // Representing the date-time format
         required: false,
       },
     ],
