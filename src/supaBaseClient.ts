@@ -9,4 +9,8 @@ if (!PUBLIC_ANON_KEY)
   throw new Error("Missing PUBLIC_ANON_KEY environment variable.");
 
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(Project_URL, PUBLIC_ANON_KEY);
+const options = {
+  auth: { persistSession: false },
+};
+
+export const supabase = createClient(Project_URL, PUBLIC_ANON_KEY, options);
