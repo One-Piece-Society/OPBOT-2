@@ -92,24 +92,31 @@ const commands = [
     name: "add-event",
     description: "Schedule a post to be sent in a specific channel",
     options: [
-      // TODO FIX REQUIRED FOR VARS USAGE
       {
-        name: "url",
-        description: "nasud",
+        name: "title",
+        description: "A title for the event",
         type: 3,
         required: true,
       },
       {
-        name: "channel",
-        description: "The message link you wish to post",
-        type: 7,
+        name: "description",
+        description: "A description for the event",
+        type: 3,
         required: true,
       },
       {
-        name: "delay",
-        description: "A time delay of n minutes",
+        name: "starttime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
         type: 3,
-        required: false,
+        required: true,
+      },
+      {
+        name: "endtime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: true,
       },
     ],
   },
