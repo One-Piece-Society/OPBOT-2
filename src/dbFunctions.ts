@@ -6,14 +6,14 @@ export const createEvent = async (
   client: Client<boolean>,
   interaction: CommandInteraction
 ) => {
-  return;
+  return interaction.reply("createEvent - Not yet implemented");
 };
 
 export const removeEvent = async (
   client: Client<boolean>,
   interaction: CommandInteraction
 ) => {
-  return;
+  return interaction.reply("removeEvent - Not yet implemented");
 };
 
 export const getEvents = async (
@@ -26,5 +26,5 @@ export const getEvents = async (
   console.log("hi");
   console.log(data);
 
-  return;
+  return interaction.reply("getEvents - Not yet implemented");
 };
