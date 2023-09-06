@@ -86,7 +86,45 @@ export const removeEvent = async (
   client: Client<boolean>,
   interaction: CommandInteraction
 ) => {
-  return interaction.reply("removeEvent - Not yet implemented");
+  // Validate id value
+  const idStr = interaction.options.get("id")?.value;
+  let id: number;
+  if (typeof idStr === "undefined") {
+    id = 1;
+  } else {
+    id = parseInt(idStr.toString());
+  }
+
+  // Validate data exists to be deleted
+  const { data } = await supabase
+    .from("OPSOC-Website-Events")
+    .select()
+    .eq("id", id);
+
+  if (data?.length == 0) {
+    return interaction.reply({
+      content: "Event ID: " + idStr + " does not exist",
+      ephemeral: true,
+    });
+  }
+
+  // Delete data
+  const { error } = await supabase
+    .from("OPSOC-Website-Events")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    return interaction.reply({
+      content: "Invalid End Time: Check if End time is in the required format",
+      ephemeral: true,
+    });
+  } else {
+    return interaction.reply({
+      content: "Event ID: " + idStr + " has been deleted from database",
+      ephemeral: false,
+    });
+  }
 };
 
 export const getEvents = async (
