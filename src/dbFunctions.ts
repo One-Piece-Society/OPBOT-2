@@ -191,10 +191,10 @@ export const getEvents = async (
     const embed = new EmbedBuilder()
       .setTitle(
         "Events data - Page (" +
-        page.toString() +
-        "/" +
-        Math.ceil(count / 10).toString() +
-        ")"
+          page.toString() +
+          "/" +
+          Math.ceil(count / 10).toString() +
+          ")"
       )
       .addFields({ name: "[ ID ] | Event Title", value: listEventStr })
       .setColor(0x34e8eb);
@@ -247,8 +247,8 @@ export const detailEvent = async (
     const endTime = moment(data[0].endTime.toString()).format(
       "MMMM Do YYYY, h:mm a"
     );
-    const locationLink = data[0].startTime
-      ? data[0].startTime.toString()
+    const locationLink = data[0].locationLink
+      ? data[0].locationLink.toString()
       : "None";
     const image = data[0].image ? data[0].image.toString() : "None";
     const createdAt = moment(data[0].createdAt.toString()).format(
@@ -277,5 +277,130 @@ export const detailEvent = async (
 
     // send the embed to the same channel as the message
     await interaction.reply({ embeds: [embed] });
+  }
+};
+
+export const updateEvent = async (
+  client: Client<boolean>,
+  interaction: CommandInteraction
+) => {
+  // Validate options correctness
+  if (interaction.options.data.length == 1) {
+    return interaction.reply({
+      content:
+        "Invalid Arguments: You must specify at least one optional argument",
+      ephemeral: true,
+    });
+  }
+
+  // Validate id value
+  const idStr = interaction.options.get("id")?.value;
+  let id: number;
+  if (typeof idStr === "undefined") {
+    id = 1;
+  } else {
+    id = parseInt(idStr.toString());
+  }
+
+  // Validate data exists to be searched
+  const { data, error } = await supabase
+    .from("OPSOC-Website-Events")
+    .select()
+    .eq("id", id);
+
+  if (error) {
+    return interaction.reply({
+      content: "Invalid DB Lookup: Error occurred with database",
+      ephemeral: true,
+    });
+  }
+
+  if (data === null || data?.length == 0) {
+    return interaction.reply({
+      content: "Event ID: " + idStr + " does not exist",
+      ephemeral: true,
+    });
+  }
+
+  // Optionals variables
+  const title = interaction.options.get("title")?.value
+    ? interaction.options.get("title")?.value
+    : data[0].title.toString();
+  const description = interaction.options.get("description")?.value
+    ? interaction.options.get("description")?.value
+    : data[0].description.toString();
+
+  // Check time validation
+  const startTime = Date.parse(
+    interaction.options.get("starttime")?.value
+      ? interaction.options.get("starttime")?.value
+      : data[0].startTime.toString()
+  );
+  if (isNaN(startTime)) {
+    return interaction.reply({
+      content:
+        "Invalid Start Time: Check if start time is in the required format",
+      ephemeral: true,
+    });
+  }
+
+  const endTime = Date.parse(
+    interaction.options.get("endtime")?.value
+      ? interaction.options.get("endtime")?.value
+      : data[0].endTime.toString()
+  );
+  if (isNaN(endTime)) {
+    return interaction.reply({
+      content: "Invalid End Time: Check if End time is in the required format",
+      ephemeral: true,
+    });
+  }
+
+  // Check optional value inputs
+  const locationStr = interaction.options.get("locationlink")?.value
+    ? interaction.options.get("locationlink")?.value
+    : data[0].locationLink
+    ? data[0].locationLink.toString()
+    : interaction.options.get("locationlink")?.value;
+
+  const imageStr = interaction.options.get("imagelink")?.value
+    ? interaction.options.get("imagelink")?.value
+    : data[0].image
+    ? data[0].image.toString()
+    : interaction.options.get("imagelink")?.value;
+
+  const postStr = interaction.options.get("postlink")?.value
+    ? interaction.options.get("postlink")?.value
+    : data[0].postLink
+    ? data[0].postLink.toString()
+    : interaction.options.get("postlink")?.value;
+
+  // Attempt updating data
+  const res = await supabase
+    .from("OPSOC-Website-Events")
+    .update({
+      title: title,
+      description: description,
+      startTime: new Date(startTime).toISOString(),
+      endTime: new Date(endTime).toISOString(),
+      locationLink: locationStr,
+      image: imageStr,
+      postLink: postStr,
+      updatedAt: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select();
+
+  // output results
+  if (res.error != null) {
+    return interaction.reply({
+      content: "Invalid DB update: Error occurred with database",
+      ephemeral: true,
+    });
+  } else {
+    return interaction.reply({
+      content: "Successful updated entry",
+      ephemeral: true,
+    });
   }
 };
