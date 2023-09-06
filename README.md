@@ -7,3 +7,13 @@ It seeks to be an improvement over the v1 bot and contains multiple features tha
 
 - [ ] API database management tool
 - [X] Automated discord message scheduler and posting system
+
+### Feature Info
+
+#### Table schema used
+
+![alt text](readme-images/supabase_schema.png)
+
+#### Usage of location links
+
+A detailed guide on obtaining image link can be found here: <https://support.google.com/maps/answer/144361>
