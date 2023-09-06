@@ -76,7 +76,7 @@ const commands = [
     ],
   },
   {
-    name: "event-info",
+    name: "events",
     description: "See a list of the 10 most recent events",
     options: [
       {
@@ -89,7 +89,7 @@ const commands = [
     ],
   },
   {
-    name: "add-event",
+    name: "create-event",
     description: "Schedule a post to be sent in a specific channel",
     options: [
       {
@@ -151,7 +151,7 @@ const commands = [
     ],
   },
   {
-    name: "check-event",
+    name: "lookup-event",
     description: "Get the full details of an event",
     options: [
       {

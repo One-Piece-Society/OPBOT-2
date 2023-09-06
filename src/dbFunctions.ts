@@ -6,13 +6,13 @@ export const eventDirectory = async (
   client: Client<boolean>,
   interaction: CommandInteraction
 ) => {
-  if (interaction.commandName === "add-event") {
+  if (interaction.commandName === "create-event") {
     createEvent(client, interaction as CommandInteraction);
-  } else if (interaction.commandName === "event-info") {
+  } else if (interaction.commandName === "events") {
     getEvents(client, interaction as CommandInteraction);
   } else if (interaction.commandName === "remove-event") {
     removeEvent(client, interaction as CommandInteraction);
-  } else if (interaction.commandName === "check-event") {
+  } else if (interaction.commandName === "lookup-event") {
     detailEvent(client, interaction as CommandInteraction);
   } else if (interaction.commandName === "update-event") {
     updateEvent(client, interaction as CommandInteraction);
