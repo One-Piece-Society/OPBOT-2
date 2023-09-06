@@ -14,7 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
-import { createEvent, removeEvent, getEvents, detailEvent } from "./dbFunctions";
+import { createEvent, removeEvent, getEvents, detailEvent, updateEvent } from "./dbFunctions";
 import { isAdmin } from "./util";
 
 // SOME CONSTANTS
@@ -162,6 +162,62 @@ const commands = [
       },
     ],
   },
+  {
+    name: "update-event",
+    description: "Schedule a post to be sent in a specific channel",
+    options: [
+      {
+        name: "id",
+        description: "id of event to modify",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "title",
+        description: "A title for the event",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "description",
+        description: "A description for the event",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "starttime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "endtime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "locationlink",
+        description: "A location link to the event location",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "imagelink",
+        description: "A link to a promotional image",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "postlink",
+        description: "A link to the event post (Discord, facebook ect)",
+        type: 3,
+        required: false,
+      },
+    ],
+  },
 ];
 
 // When the client is ready, run this code (only once)
@@ -212,6 +268,11 @@ client.on("interactionCreate", async (interaction: Interaction) => {
       isAdmin(interaction)
     ) {
       detailEvent(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName === "update-event" &&
+      isAdmin(interaction)
+    ) {
+      updateEvent(client, interaction as CommandInteraction);
     }
   }
 
