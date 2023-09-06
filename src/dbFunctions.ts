@@ -67,12 +67,13 @@ export const createEvent = async (
       ephemeral: true,
     });
   } else {
-    // return interaction.reply("createEvent - Not yet implemented");
-
     // create an embed object
     const embed = new EmbedBuilder()
       .setTitle("Success: Added event to database")
-      .addFields({ name: "Title", value: "The value for the field" })
+      .addFields(
+        { name: "Title", value: data[0].title },
+        { name: "Content Reference ID", value: data[0].id.toString() }
+      )
       .setColor(0x48be89);
 
     // send the embed to the same channel as the message
