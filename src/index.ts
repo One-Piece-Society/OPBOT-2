@@ -14,7 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
-import { createEvent, removeEvent, getEvents, detailEvent, updateEvent } from "./dbFunctions";
+import { eventDirectory } from "./dbFunctions";
 import { isAdmin } from "./util";
 
 // SOME CONSTANTS
@@ -249,30 +249,10 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     if (interaction.commandName === "post" && isAdmin(interaction)) {
       createPost(client, interaction as CommandInteraction);
     } else if (
-      interaction.commandName === "add-event" &&
+      interaction.commandName.includes("event") &&
       isAdmin(interaction)
     ) {
-      createEvent(client, interaction as CommandInteraction);
-    } else if (
-      interaction.commandName === "event-info" &&
-      isAdmin(interaction)
-    ) {
-      getEvents(client, interaction as CommandInteraction);
-    } else if (
-      interaction.commandName === "remove-event" &&
-      isAdmin(interaction)
-    ) {
-      removeEvent(client, interaction as CommandInteraction);
-    } else if (
-      interaction.commandName === "check-event" &&
-      isAdmin(interaction)
-    ) {
-      detailEvent(client, interaction as CommandInteraction);
-    } else if (
-      interaction.commandName === "update-event" &&
-      isAdmin(interaction)
-    ) {
-      updateEvent(client, interaction as CommandInteraction);
+      eventDirectory(client, interaction);
     }
   }
 

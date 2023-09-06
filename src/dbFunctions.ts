@@ -2,6 +2,23 @@ import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 import moment from "moment";
 
+export const eventDirectory = async (
+  client: Client<boolean>,
+  interaction: CommandInteraction
+) => {
+  if (interaction.commandName === "add-event") {
+    createEvent(client, interaction as CommandInteraction);
+  } else if (interaction.commandName === "event-info") {
+    getEvents(client, interaction as CommandInteraction);
+  } else if (interaction.commandName === "remove-event") {
+    removeEvent(client, interaction as CommandInteraction);
+  } else if (interaction.commandName === "check-event") {
+    detailEvent(client, interaction as CommandInteraction);
+  } else if (interaction.commandName === "update-event") {
+    updateEvent(client, interaction as CommandInteraction);
+  }
+};
+
 export const createEvent = async (
   client: Client<boolean>,
   interaction: CommandInteraction
