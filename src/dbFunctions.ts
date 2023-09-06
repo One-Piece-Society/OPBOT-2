@@ -12,7 +12,6 @@ export const createEvent = async (
   interaction: CommandInteraction
 ) => {
   // Validate data
-  console.log(interaction.options.data);
   const title = interaction.options.data[0]["value"]?.toString();
   const desc = interaction.options.data[1]["value"]?.toString();
   const timeS = interaction.options.data[2]["value"]?.toString();
@@ -50,6 +49,11 @@ export const createEvent = async (
     });
   }
 
+  // Optionals variables
+  const locationStr = interaction.options.get("locationlink")?.value;
+  const imageStr = interaction.options.get("imagelink")?.value;
+  const postStr = interaction.options.get("postlink")?.value;
+
   // Attempt insertion of data
   const { data, error } = await supabase
     .from("OPSOC-Website-Events")
@@ -58,6 +62,9 @@ export const createEvent = async (
       description: desc,
       startTime: new Date(startTime).toISOString(),
       endTime: new Date(endTime).toISOString(),
+      locationLink: locationStr,
+      image: imageStr,
+      postLink: postStr,
     })
     .select();
 
@@ -77,7 +84,7 @@ export const createEvent = async (
       .setColor(0x48be89);
 
     // send the embed to the same channel as the message
-    await interaction.channel?.send({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   }
 };
 

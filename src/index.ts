@@ -118,6 +118,24 @@ const commands = [
         type: 3,
         required: true,
       },
+      {
+        name: "locationlink",
+        description: "A location link to the event location",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "imagelink",
+        description: "A link to a promotional image",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "postlink",
+        description: "A link to the event post (Discord, facebook ect)",
+        type: 3,
+        required: false,
+      },
     ],
   },
   {
