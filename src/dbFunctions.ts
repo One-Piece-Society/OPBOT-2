@@ -1,5 +1,6 @@
 import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
+import moment from "moment";
 
 export const createEvent = async (
   client: Client<boolean>,
@@ -120,10 +121,13 @@ export const removeEvent = async (
       ephemeral: true,
     });
   } else {
-    return interaction.reply({
-      content: "Event ID: " + idStr + " has been deleted from database",
-      ephemeral: false,
-    });
+    const embed = new EmbedBuilder()
+      .setTitle("Deletion is successful")
+      .addFields({ name: "Event ID", value: id.toString() })
+      .setColor(0xff0000);
+
+    // send the embed to the same channel as the message
+    await interaction.reply({ embeds: [embed] });
   }
 };
 
@@ -187,13 +191,89 @@ export const getEvents = async (
     const embed = new EmbedBuilder()
       .setTitle(
         "Events data - Page (" +
-          page.toString() +
-          "/" +
-          Math.ceil(count / 10).toString() +
-          ")"
+        page.toString() +
+        "/" +
+        Math.ceil(count / 10).toString() +
+        ")"
       )
       .addFields({ name: "[ ID ] | Event Title", value: listEventStr })
       .setColor(0x34e8eb);
+
+    // send the embed to the same channel as the message
+    await interaction.reply({ embeds: [embed] });
+  }
+};
+
+export const detailEvent = async (
+  client: Client<boolean>,
+  interaction: CommandInteraction
+) => {
+  // Validate id value
+  const idStr = interaction.options.get("id")?.value;
+  let id: number;
+  if (typeof idStr === "undefined") {
+    id = 1;
+  } else {
+    id = parseInt(idStr.toString());
+  }
+
+  // Validate data exists to be searched
+  const { data, error } = await supabase
+    .from("OPSOC-Website-Events")
+    .select()
+    .eq("id", id);
+
+  if (data?.length == 0) {
+    return interaction.reply({
+      content: "Event ID: " + idStr + " does not exist",
+      ephemeral: true,
+    });
+  }
+
+  // Return results
+  if (error) {
+    return interaction.reply({
+      content: "Invalid End Time: Check if End time is in the required format",
+      ephemeral: true,
+    });
+  } else {
+    console.log(data[0]);
+    const id = data[0].id.toString();
+    const title = data[0].title.toString();
+    const description = data[0].description.toString();
+    const startTime = moment(data[0].startTime.toString()).format(
+      "MMMM Do YYYY, h:mm a"
+    );
+    const endTime = moment(data[0].endTime.toString()).format(
+      "MMMM Do YYYY, h:mm a"
+    );
+    const locationLink = data[0].startTime
+      ? data[0].startTime.toString()
+      : "None";
+    const image = data[0].image ? data[0].image.toString() : "None";
+    const createdAt = moment(data[0].createdAt.toString()).format(
+      "MMMM Do YYYY, h:mm a"
+    );
+    const updatedAt = moment(data[0].updatedAt.toString()).format(
+      "MMMM Do YYYY, h:mm a"
+    );
+    const postLink = data[0].postLink ? data[0].postLink.toString() : "None";
+
+    // create an embed object
+    const embed = new EmbedBuilder()
+      .setTitle("Event info [" + id + "]")
+      .addFields(
+        { name: "Title", value: title },
+        { name: "Description", value: description },
+        { name: "Event Start Time", value: startTime },
+        { name: "Event End Time", value: endTime },
+        { name: "Location Link", value: locationLink },
+        { name: "Image Link", value: image },
+        { name: "Created Time", value: createdAt },
+        { name: "Updated Time", value: updatedAt },
+        { name: "Post Link", value: postLink }
+      )
+      .setColor(0xffb300);
 
     // send the embed to the same channel as the message
     await interaction.reply({ embeds: [embed] });

@@ -14,7 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
-import { createEvent, removeEvent, getEvents } from "./dbFunctions";
+import { createEvent, removeEvent, getEvents, detailEvent } from "./dbFunctions";
 import { isAdmin } from "./util";
 
 // SOME CONSTANTS
@@ -150,6 +150,18 @@ const commands = [
       },
     ],
   },
+  {
+    name: "check-event",
+    description: "Get the full details of an event",
+    options: [
+      {
+        name: "id",
+        description: "id of event to lookup",
+        type: 3,
+        required: true,
+      },
+    ],
+  },
 ];
 
 // When the client is ready, run this code (only once)
@@ -195,6 +207,11 @@ client.on("interactionCreate", async (interaction: Interaction) => {
       isAdmin(interaction)
     ) {
       removeEvent(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName === "check-event" &&
+      isAdmin(interaction)
+    ) {
+      detailEvent(client, interaction as CommandInteraction);
     }
   }
 
