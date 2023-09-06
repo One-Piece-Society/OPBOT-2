@@ -5,7 +5,7 @@ It seeks to be an improvement over the v1 bot and contains multiple features tha
 
 ## 📕 Current Features
 
-- [ ] API database management tool
+- [X] API database management tool
 - [X] Automated discord message scheduler and posting system
 
 ### Feature Info
