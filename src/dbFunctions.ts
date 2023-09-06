@@ -2,6 +2,10 @@ import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 import moment from "moment";
 
+// Constant ENV var
+const EVENT_TABLE = process.env?.EVENT_TABLE;
+if (!EVENT_TABLE) throw new Error("Missing EVENT_TABLE environment variable.");
+
 export const eventDirectory = async (
   client: Client<boolean>,
   interaction: CommandInteraction
@@ -68,7 +72,7 @@ export const createEvent = async (
 
   // Attempt insertion of data
   const { data, error } = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .insert({
       title: title,
       description: desc,
@@ -114,10 +118,7 @@ export const removeEvent = async (
   }
 
   // Validate data exists to be deleted
-  const { data } = await supabase
-    .from("OPSOC-Website-Events")
-    .select()
-    .eq("id", id);
+  const { data } = await supabase.from(EVENT_TABLE).select().eq("id", id);
 
   if (data?.length == 0) {
     return interaction.reply({
@@ -127,10 +128,7 @@ export const removeEvent = async (
   }
 
   // Delete data
-  const { error } = await supabase
-    .from("OPSOC-Website-Events")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from(EVENT_TABLE).delete().eq("id", id);
 
   if (error) {
     return interaction.reply({
@@ -163,7 +161,7 @@ export const getEvents = async (
 
   // Get page count
   const { count } = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .select("*", { count: "exact", head: true });
 
   // Validate var
@@ -188,7 +186,7 @@ export const getEvents = async (
 
   // Fetch data from database
   const { data, error } = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .select("id,title")
     .range((page - 1) * 10, (page - 1) * 10 + 9);
 
@@ -236,7 +234,7 @@ export const detailEvent = async (
 
   // Validate data exists to be searched
   const { data, error } = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .select()
     .eq("id", id);
 
@@ -321,7 +319,7 @@ export const updateEvent = async (
 
   // Validate data exists to be searched
   const { data, error } = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .select()
     .eq("id", id);
 
@@ -394,7 +392,7 @@ export const updateEvent = async (
 
   // Attempt updating data
   const res = await supabase
-    .from("OPSOC-Website-Events")
+    .from(EVENT_TABLE)
     .update({
       title: title,
       description: description,
