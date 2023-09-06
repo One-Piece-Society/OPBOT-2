@@ -1,10 +1,4 @@
-import {
-  AttachmentBuilder,
-  Client,
-  CommandInteraction,
-  EmbedBuilder,
-} from "discord.js";
-import { parseAndCalculateDifference, parseMessage } from "./util";
+import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 
 export const createEvent = async (
@@ -99,14 +93,71 @@ export const getEvents = async (
   client: Client<boolean>,
   interaction: CommandInteraction
 ) => {
-  // let { data: OPSOC-Website-Events, error } = await supabase.from('OPSOC-Website-Events').select('*')
+  // Validate page value
+  const pageStr = interaction.options.get("page")?.value;
+  let page: number;
+  if (typeof pageStr === "undefined") {
+    page = 1;
+  } else {
+    page = parseInt(pageStr.toString());
+  }
 
+  // Get page count
+  const { count } = await supabase
+    .from("OPSOC-Website-Events")
+    .select("*", { count: "exact", head: true });
+
+  // Validate var
+  if (count === null) {
+    return interaction.reply({
+      content: "DB Error: Error occurred with database count",
+      ephemeral: true,
+    });
+  } else if (Number.isNaN(page) || page <= 0) {
+    return interaction.reply({
+      content: "Page error: Page must be positive integer",
+      ephemeral: true,
+    });
+  } else if (page > Math.ceil(count / 10)) {
+    return interaction.reply({
+      content:
+        "Page out of range: Page in range 0 to " +
+        Math.ceil(count / 10).toString(),
+      ephemeral: true,
+    });
+  }
+
+  // Fetch data from database
   const { data, error } = await supabase
     .from("OPSOC-Website-Events")
-    .select("*");
-  console.log("hi");
-  console.log(data);
-  console.log(error);
+    .select("id,title")
+    .range((page - 1) * 10, (page - 1) * 10 + 9);
 
-  return interaction.reply("getEvents - Not yet implemented");
+  // Validates and return results
+  if (error) {
+    return interaction.reply({
+      content: "DB Error: Error occurred with database fetch",
+      ephemeral: true,
+    });
+  } else {
+    // Constructs event list data
+    const listEventStr = data
+      .map((item) => "[ " + item.id + " ] - " + item.title)
+      .join("\n");
+
+    // create an embed object
+    const embed = new EmbedBuilder()
+      .setTitle(
+        "Events data - Page (" +
+          page.toString() +
+          "/" +
+          Math.ceil(count / 10).toString() +
+          ")"
+      )
+      .addFields({ name: "[ ID ] | Event Title", value: listEventStr })
+      .setColor(0x34e8eb);
+
+    // send the embed to the same channel as the message
+    await interaction.reply({ embeds: [embed] });
+  }
 };

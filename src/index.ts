@@ -77,12 +77,12 @@ const commands = [
   },
   {
     name: "event-info",
-    description: "See a list of most recent events",
+    description: "See a list of the 10 most recent events",
     options: [
       {
-        name: "start",
+        name: "page",
         description:
-          "Show result starting from the nth entry (default 1st entry)",
+          "Show result starting from the nth page (default 1st page)",
         type: 3,
         required: false,
       },
