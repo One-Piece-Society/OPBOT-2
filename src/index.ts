@@ -14,6 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { createPost } from "./postFunctions";
+import { eventDirectory } from "./dbFunctions";
 import { isAdmin } from "./util";
 
 // SOME CONSTANTS
@@ -74,6 +75,149 @@ const commands = [
       },
     ],
   },
+  {
+    name: "events",
+    description: "See a list of the 10 most recent events",
+    options: [
+      {
+        name: "page",
+        description:
+          "Show result starting from the nth page (default 1st page)",
+        type: 3,
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "create-event",
+    description: "Schedule a post to be sent in a specific channel",
+    options: [
+      {
+        name: "title",
+        description: "A title for the event",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "description",
+        description: "A description for the event",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "starttime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "endtime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "locationlink",
+        description: "A location link to the event location",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "imagelink",
+        description: "A link to a promotional image",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "postlink",
+        description: "A link to the event post (Discord, facebook ect)",
+        type: 3,
+        required: false,
+      },
+    ],
+  },
+  {
+    name: "remove-event",
+    description: "Remove an event based on an id",
+    options: [
+      {
+        name: "id",
+        description: "id of event to remove",
+        type: 3,
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "lookup-event",
+    description: "Get the full details of an event",
+    options: [
+      {
+        name: "id",
+        description: "id of event to lookup",
+        type: 3,
+        required: true,
+      },
+    ],
+  },
+  {
+    name: "update-event",
+    description: "Schedule a post to be sent in a specific channel",
+    options: [
+      {
+        name: "id",
+        description: "id of event to modify",
+        type: 3,
+        required: true,
+      },
+      {
+        name: "title",
+        description: "A title for the event",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "description",
+        description: "A description for the event",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "starttime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "endtime",
+        description:
+          "A time in the format YYYY-MM-DDTHH:MM:SS (example 2016-08-25T12:01:02)",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "locationlink",
+        description: "A location link to the event location",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "imagelink",
+        description: "A link to a promotional image",
+        type: 3,
+        required: false,
+      },
+      {
+        name: "postlink",
+        description: "A link to the event post (Discord, facebook ect)",
+        type: 3,
+        required: false,
+      },
+    ],
+  },
 ];
 
 // When the client is ready, run this code (only once)
@@ -104,6 +248,11 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   if (interaction.channel instanceof TextChannel) {
     if (interaction.commandName === "post" && isAdmin(interaction)) {
       createPost(client, interaction as CommandInteraction);
+    } else if (
+      interaction.commandName.includes("event") &&
+      isAdmin(interaction)
+    ) {
+      eventDirectory(client, interaction);
     }
   }
 

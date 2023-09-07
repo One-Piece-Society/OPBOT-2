@@ -7,6 +7,12 @@ import {
 } from "discord.js";
 import { differenceInMinutes } from "date-fns";
 
+// SOME CONSTANTS
+const ADMIN_ROLE_IDS = process.env?.ADMIN_ROLE_IDS;
+
+if (!ADMIN_ROLE_IDS)
+  throw new Error("Missing ADMIN_ROLE_IDS environment variable.");
+
 export const isAdmin = (
   interaction:
     | ChatInputCommandInteraction<CacheType>
@@ -15,10 +21,9 @@ export const isAdmin = (
 ) => {
   const adminCheck = (
     interaction.member?.roles as GuildMemberRoleManager
-  ).cache.some(
-    (role) =>
-      // id's for admins roles
-      role.id === "949689658789490688" || role.id === "1000265498639994951"
+  ).cache.some((role) =>
+    // id's for admins roles
+    ADMIN_ROLE_IDS.includes(role.id)
   );
 
   if (!adminCheck) {
