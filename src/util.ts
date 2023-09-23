@@ -61,3 +61,7 @@ export const parseAndCalculateDifference = (dateTimeInput: number): number => {
   const difference = differenceInMinutes(inputDate, currentDate);
   return difference;
 };
+
+export const generateTextID = (): string => {
+  return Math.floor(Math.random() * 1000000000).toString();
+};

@@ -1,6 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 import moment from "moment";
+import { generateTextID } from "./util";
 
 // Constant ENV var
 const EVENT_TABLE = process.env?.EVENT_TABLE;
@@ -68,19 +69,32 @@ export const createEvent = async (
   // Optionals variables
   const locationStr = interaction.options.get("locationlink")?.value;
   const imageStr = interaction.options.get("imagelink")?.value;
-  const postStr = interaction.options.get("postlink")?.value;
+  const onlineVar = interaction.options.get("online")?.value;
+  const featuredVar = interaction.options.get("featured")?.value;
+
+  // Generate new id
+  let newID;
+  let size = 1;
+  while (size != 0) {
+    newID = generateTextID();
+    const { data } = await supabase.from(EVENT_TABLE).select().eq("id", newID);
+    size = data?.length ?? 1;
+  }
 
   // Attempt insertion of data
   const { data, error } = await supabase
     .from(EVENT_TABLE)
     .insert({
+      id: newID,
       title: title,
       description: desc,
       startTime: new Date(startTime).toISOString(),
       endTime: new Date(endTime).toISOString(),
       locationLink: locationStr,
       image: imageStr,
-      postLink: postStr,
+      online: onlineVar,
+      updatedAt: new Date().toISOString(),
+      featured: featuredVar,
     })
     .select();
 
