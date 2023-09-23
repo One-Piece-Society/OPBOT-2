@@ -1,6 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 import moment from "moment";
+import { generateTextID } from "./util";
 
 // Constant ENV var
 const EVENT_TABLE = process.env?.EVENT_TABLE;
@@ -68,19 +69,32 @@ export const createEvent = async (
   // Optionals variables
   const locationStr = interaction.options.get("locationlink")?.value;
   const imageStr = interaction.options.get("imagelink")?.value;
-  const postStr = interaction.options.get("postlink")?.value;
+  const onlineVar = interaction.options.get("online")?.value;
+  const featuredVar = interaction.options.get("featured")?.value;
+
+  // Generate new id
+  let newID;
+  let size = 1;
+  while (size != 0) {
+    newID = generateTextID();
+    const { data } = await supabase.from(EVENT_TABLE).select().eq("id", newID);
+    size = data?.length ?? 1;
+  }
 
   // Attempt insertion of data
   const { data, error } = await supabase
     .from(EVENT_TABLE)
     .insert({
+      id: newID,
       title: title,
       description: desc,
       startTime: new Date(startTime).toISOString(),
       endTime: new Date(endTime).toISOString(),
       locationLink: locationStr,
       image: imageStr,
-      postLink: postStr,
+      online: onlineVar,
+      updatedAt: new Date().toISOString(),
+      featured: featuredVar,
     })
     .select();
 
@@ -266,13 +280,14 @@ export const detailEvent = async (
       ? data[0].locationLink.toString()
       : "None";
     const image = data[0].image ? data[0].image.toString() : "None";
+    const onlineVal = data[0].online.toString();
     const createdAt = moment(data[0].createdAt.toString()).format(
       "MMMM Do YYYY, h:mm a"
     );
     const updatedAt = moment(data[0].updatedAt.toString()).format(
       "MMMM Do YYYY, h:mm a"
     );
-    const postLink = data[0].postLink ? data[0].postLink.toString() : "None";
+    const featuredVal = data[0].featured.toString();
 
     // create an embed object
     const embed = new EmbedBuilder()
@@ -284,9 +299,10 @@ export const detailEvent = async (
         { name: "Event End Time", value: endTime },
         { name: "Location Link", value: locationLink },
         { name: "Image Link", value: image },
+        { name: "Is event online", value: onlineVal },
         { name: "Created Time", value: createdAt },
         { name: "Updated Time", value: updatedAt },
-        { name: "Post Link", value: postLink }
+        { name: "Is event featured", value: featuredVal }
       )
       .setColor(0xffb300);
 
@@ -344,6 +360,12 @@ export const updateEvent = async (
   const description = interaction.options.get("description")?.value
     ? interaction.options.get("description")?.value
     : data[0].description.toString();
+  const onlineVar = interaction.options.get("online")?.value
+    ? interaction.options.get("online")?.value
+    : data[0].online.toString();
+  const featuredVar = interaction.options.get("featured")?.value
+    ? interaction.options.get("featured")?.value
+    : data[0].featured.toString();
 
   // Check time validation
   const startTime = Date.parse(
@@ -384,12 +406,6 @@ export const updateEvent = async (
     ? data[0].image.toString()
     : interaction.options.get("imagelink")?.value;
 
-  const postStr = interaction.options.get("postlink")?.value
-    ? interaction.options.get("postlink")?.value
-    : data[0].postLink
-    ? data[0].postLink.toString()
-    : interaction.options.get("postlink")?.value;
-
   // Attempt updating data
   const res = await supabase
     .from(EVENT_TABLE)
@@ -400,8 +416,9 @@ export const updateEvent = async (
       endTime: new Date(endTime).toISOString(),
       locationLink: locationStr,
       image: imageStr,
-      postLink: postStr,
+      online: onlineVar,
       updatedAt: new Date().toISOString(),
+      featured: featuredVar,
     })
     .eq("id", id)
     .select();
