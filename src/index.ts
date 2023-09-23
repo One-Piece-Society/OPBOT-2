@@ -217,9 +217,15 @@ const commands = [
         required: false,
       },
       {
-        name: "postlink",
-        description: "A link to the event post (Discord, facebook ect)",
-        type: 3,
+        name: "online",
+        description: "A bool value for if event is online",
+        type: 5,
+        required: false,
+      },
+      {
+        name: "featured",
+        description: "A bool value for if event is featured on front page",
+        type: 5,
         required: false,
       },
     ],

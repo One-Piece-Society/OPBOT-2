@@ -360,6 +360,12 @@ export const updateEvent = async (
   const description = interaction.options.get("description")?.value
     ? interaction.options.get("description")?.value
     : data[0].description.toString();
+  const onlineVar = interaction.options.get("online")?.value
+    ? interaction.options.get("online")?.value
+    : data[0].online.toString();
+  const featuredVar = interaction.options.get("featured")?.value
+    ? interaction.options.get("featured")?.value
+    : data[0].featured.toString();
 
   // Check time validation
   const startTime = Date.parse(
@@ -400,12 +406,6 @@ export const updateEvent = async (
     ? data[0].image.toString()
     : interaction.options.get("imagelink")?.value;
 
-  const postStr = interaction.options.get("postlink")?.value
-    ? interaction.options.get("postlink")?.value
-    : data[0].postLink
-    ? data[0].postLink.toString()
-    : interaction.options.get("postlink")?.value;
-
   // Attempt updating data
   const res = await supabase
     .from(EVENT_TABLE)
@@ -416,8 +416,9 @@ export const updateEvent = async (
       endTime: new Date(endTime).toISOString(),
       locationLink: locationStr,
       image: imageStr,
-      postLink: postStr,
+      online: onlineVar,
       updatedAt: new Date().toISOString(),
+      featured: featuredVar,
     })
     .eq("id", id)
     .select();
