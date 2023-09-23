@@ -280,13 +280,14 @@ export const detailEvent = async (
       ? data[0].locationLink.toString()
       : "None";
     const image = data[0].image ? data[0].image.toString() : "None";
+    const onlineVal = data[0].online.toString();
     const createdAt = moment(data[0].createdAt.toString()).format(
       "MMMM Do YYYY, h:mm a"
     );
     const updatedAt = moment(data[0].updatedAt.toString()).format(
       "MMMM Do YYYY, h:mm a"
     );
-    const postLink = data[0].postLink ? data[0].postLink.toString() : "None";
+    const featuredVal = data[0].featured.toString();
 
     // create an embed object
     const embed = new EmbedBuilder()
@@ -298,9 +299,10 @@ export const detailEvent = async (
         { name: "Event End Time", value: endTime },
         { name: "Location Link", value: locationLink },
         { name: "Image Link", value: image },
+        { name: "Is event online", value: onlineVal },
         { name: "Created Time", value: createdAt },
         { name: "Updated Time", value: updatedAt },
-        { name: "Post Link", value: postLink }
+        { name: "Is event featured", value: featuredVal }
       )
       .setColor(0xffb300);
 
