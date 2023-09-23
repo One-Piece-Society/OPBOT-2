@@ -63,5 +63,7 @@ export const parseAndCalculateDifference = (dateTimeInput: number): number => {
 };
 
 export const generateTextID = (): string => {
-  return Math.floor(Math.random() * 1000000000).toString();
+  return Math.floor(Math.random() * 1000000000)
+    .toString()
+    .padStart(10, "0");
 };
