@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { supabase } from "./supaBaseClient";
 import moment from "moment";
-import { generateTextID } from "./util";
+import { generateTextID } from "./utils/util";
 
 // Constant ENV var
 const EVENT_TABLE = process.env?.EVENT_TABLE;

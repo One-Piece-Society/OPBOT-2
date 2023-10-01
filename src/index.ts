@@ -15,7 +15,7 @@ dotenv.config();
 
 import { createPost } from "./postFunctions";
 import { eventDirectory } from "./dbFunctions";
-import { isAdmin } from "./util";
+import { isAdmin } from "./utils/util";
 
 // SOME CONSTANTS
 const TOKEN = process.env?.TOKEN;

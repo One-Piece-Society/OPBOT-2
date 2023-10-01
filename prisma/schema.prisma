@@ -28,7 +28,7 @@ model Event {
 
 model ImagePanel {
     id       String        @id @default(cuid())
-    position PanelPosition
+    position PanelPosition @unique
     image    String
 }
 

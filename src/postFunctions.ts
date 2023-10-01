@@ -1,5 +1,5 @@
 import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
-import { parseAndCalculateDifference, parseMessage } from "./util";
+import { parseAndCalculateDifference, parseMessage } from "./utils/util";
 
 const sleep = (ms: number | undefined) => new Promise((r) => setTimeout(r, ms));
 
