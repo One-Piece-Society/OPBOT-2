@@ -1,5 +1,5 @@
 import { type Event as EventType } from "@prisma/client";
-import { Database } from "src/utils/database";
+import { Database } from "src/utils/Database";
 
 type newEventType = Omit<EventType, "id">;
 

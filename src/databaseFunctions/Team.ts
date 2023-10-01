@@ -1,5 +1,5 @@
 import { type Team as TeamType } from "@prisma/client";
-import { Database } from "src/utils/database";
+import { Database } from "src/utils/Database";
 
 export class Team {
   private prisma = Database.getInstance().getPrismaClient();
