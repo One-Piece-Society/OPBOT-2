@@ -1,39 +1,48 @@
 {
-  "name": "opbot-2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node ./dist",
-    "build": "tsc",
-    "dev": "tsc && node ./dist",
-    "lint": "eslint --ext .ts src && prettier --check \"src/**/*.ts\"",
-    "lint:fix": "eslint --fix --ext .ts src && prettier --write \"src/**/*.ts\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/One-Piece-Society/OPBOT-2.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/One-Piece-Society/OPBOT-2/issues"
-  },
-  "homepage": "https://github.com/One-Piece-Society/OPBOT-2#readme",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.33.1",
-    "date-fns": "^2.30.0",
-    "discord.js": "^14.11.0",
-    "dotenv": "^16.0.3",
-    "moment": "^2.29.4"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
-    "@typescript-eslint/parser": "^5.59.2",
-    "eslint": "^8.40.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8"
-  }
+    "name": "rgs-bot",
+    "version": "1.0.0",
+    "description": "",
+    "author": {
+        "email": "haripramodb@gmail.com",
+        "name": "Hari Pramod"
+    },
+    "contributors": [
+        {
+            "name": "Alex Zhong",
+            "url": "https://github.com/Gitalexzhong"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/One-Piece-Society/OPBOT-2"
+    },
+    "license": "MIT",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "start": "node .",
+        "build": "tsup src/index.ts --minify",
+        "format": "prettier --write \"**/*.{json,ts}\"",
+        "lint": "eslint . --ext ts --fix"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^7.7.0",
+        "discord.js": "^14.11.0",
+        "dotenv": "^16.1.4",
+        "googleapis": "^118.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.3.1",
+        "@typescript-eslint/eslint-plugin": "^5.59.11",
+        "@typescript-eslint/parser": "^5.59.11",
+        "eslint": "^8.42.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-n": "^16.0.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "prettier": "^2.8.8",
+        "tsup": "^6.7.0",
+        "tsx": "^3.12.7",
+        "typescript": "^5.1.3"
+    }
 }
