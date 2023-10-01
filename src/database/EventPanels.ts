@@ -1,7 +1,7 @@
 import { PanelPosition } from "@prisma/client";
-import { Database } from "src/utils/Database";
+import Database from "../utils/Database";
 
-export class EventPanels {
+export default class EventPanels {
   private prisma = Database.getInstance().getPrismaClient();
 
   public updateEventPanel = (position: PanelPosition) => {

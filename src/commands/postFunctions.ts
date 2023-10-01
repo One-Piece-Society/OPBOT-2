@@ -1,8 +1,8 @@
 import { AttachmentBuilder, Client, CommandInteraction } from "discord.js";
-import { parseAndCalculateDifference, parseMessage } from "./utils/util";
+import Helpers from "./Helpers";
 
 const sleep = (ms: number | undefined) => new Promise((r) => setTimeout(r, ms));
-
+const util = new Helpers();
 export const createPost = async (
   client: Client<boolean>,
   interaction: CommandInteraction
@@ -72,7 +72,7 @@ export const createPost = async (
   const dateTime = interaction.options.get("datetime")?.value;
   if (typeof dateTime === "number") {
     // if user provides datetime, use dateTime difference as delay instead
-    delay = parseAndCalculateDifference(dateTime);
+    delay = util.parseAndCalculateDifference(dateTime);
   }
 
   if (Number.isNaN(delay) || delay < 0) {
@@ -97,7 +97,7 @@ export const createPost = async (
   }
 
   const sentMsg = await ch.send({
-    content: parseMessage(msg?.content),
+    content: util.parseMessage(msg?.content),
     files: attachments,
   });
 

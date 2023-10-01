@@ -1,9 +1,9 @@
 import { type Event as EventType } from "@prisma/client";
-import { Database } from "src/utils/Database";
+import Database from "../utils/Database";
 
 type newEventType = Omit<EventType, "id">;
 
-export class Events {
+export default class Events {
   private prisma = Database.getInstance().getPrismaClient();
 
   public createEvent = (data: newEventType): string => {

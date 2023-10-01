@@ -1,7 +1,7 @@
 import { type Team as TeamType } from "@prisma/client";
-import { Database } from "src/utils/Database";
+import Database from "../utils/Database";
 
-export class Team {
+export default class Team {
   private prisma = Database.getInstance().getPrismaClient();
 
   public addTeamMember = (data: Omit<TeamType, "id">) => {

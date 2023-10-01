@@ -1,7 +1,7 @@
 import { PanelPosition } from "@prisma/client";
-import { Database } from "src/utils/Database";
+import Database from "../utils/Database";
 
-export class HeroPanel {
+export default class HeroPanel {
   private prisma = Database.getInstance().getPrismaClient();
 
   public updatePanelImage = async (
