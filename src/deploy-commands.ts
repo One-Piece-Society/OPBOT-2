@@ -1,6 +1,6 @@
 import { REST, Routes } from "discord.js";
 import { config } from "./config";
-import { adminCommands, commands } from "./commands/command-list";
+import { commands } from "./commands/command-list";
 
 const commandsData = Object.values(commands).map((command) => command.data);
 
@@ -17,7 +17,7 @@ export async function deployCommands({ guildId }: DeployCommandsProps) {
         await rest.put(
             Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, guildId),
             {
-                body: { ...commandsData, ...adminCommands },
+                body: commandsData,
             }
         );
 

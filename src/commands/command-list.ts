@@ -1,15 +1,20 @@
 import * as ping from "../interactions/ping";
 import * as about from "../interactions/about";
-import * as post from "../interactions/post";
+import * as delaypost from "../interactions/delaypost";
 
 /**
  * List of commands that are available as interactions in Discord
  */
-export const commands = {
+export const userCommands = {
     ping,
     about,
 };
 
 export const adminCommands = {
-    post,
+    delaypost,
+};
+
+export const commands = {
+    ...userCommands,
+    ...adminCommands,
 };

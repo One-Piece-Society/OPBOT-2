@@ -1,4 +1,4 @@
-export const sleep = (ms: number | undefined) => {
-    new Promise((r) => setTimeout(r, ms));
+export const sleep = async (ms: number | undefined) => {
+    await new Promise((r) => setTimeout(r, ms));
 };
 

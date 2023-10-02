@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { deployCommands } from "./deploy-commands";
-import { adminCommands, commands } from "./commands/command-list";
+import { adminCommands, userCommands } from "./commands/command-list";
 import { config } from "./config";
 import { isAdmin } from "./functions/permissions";
 
@@ -38,13 +38,15 @@ client.on("interactionCreate", async (interaction) => {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
 
-    if (commands[commandName as keyof typeof commands]) {
-        commands[commandName as keyof typeof commands].execute(interaction);
+    if (userCommands[commandName as keyof typeof userCommands]) {
+        await userCommands[commandName as keyof typeof userCommands].execute(
+            interaction
+        );
     }
 
     if (adminCommands[commandName as keyof typeof adminCommands]) {
         if (!isAdmin(interaction)) return;
-        adminCommands[commandName as keyof typeof adminCommands].execute(
+        await adminCommands[commandName as keyof typeof adminCommands].execute(
             interaction
         );
     }
