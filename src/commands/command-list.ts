@@ -8,5 +8,8 @@ import * as post from "../interactions/post";
 export const commands = {
     ping,
     about,
+};
+
+export const adminCommands = {
     post,
 };

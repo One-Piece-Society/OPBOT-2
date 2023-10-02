@@ -1,7 +1,8 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { deployCommands } from "./deploy-commands";
-import { commands } from "./commands/command-list";
+import { adminCommands, commands } from "./commands/command-list";
 import { config } from "./config";
+import { isAdmin } from "./functions/permissions";
 
 /**
  * Create a new Discord Client and set its intents to determine which events
@@ -34,12 +35,18 @@ client.on("messageCreate", async (message) => {
  * Run corresponding commands when new user interaction has been created
  */
 client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) {
-        return;
-    }
+    if (!interaction.isCommand()) return;
     const { commandName } = interaction;
+
     if (commands[commandName as keyof typeof commands]) {
         commands[commandName as keyof typeof commands].execute(interaction);
+    }
+
+    if (adminCommands[commandName as keyof typeof adminCommands]) {
+        if (!isAdmin(interaction)) return;
+        adminCommands[commandName as keyof typeof adminCommands].execute(
+            interaction
+        );
     }
 });
 
