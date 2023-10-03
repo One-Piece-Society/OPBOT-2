@@ -25,4 +25,3 @@ export const isAdmin = (
     }
     return adminCheck;
 };
-

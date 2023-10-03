@@ -42,4 +42,3 @@ export const getAllEvents = async () => {
 
     return { data: events };
 };
-

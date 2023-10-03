@@ -28,11 +28,13 @@ export const removeTeamMember = async (id: string) => {
 export const getAllTeamMembers = async (year?: number) => {
     const members = await prisma.team
         .findMany(
-            year ? {
-                where: {
-                    year,
-                },
-            } : undefined
+            year
+                ? {
+                      where: {
+                          year,
+                      },
+                  }
+                : undefined
         )
         .catch((err) => {
             throw new Error(
@@ -42,4 +44,3 @@ export const getAllTeamMembers = async (year?: number) => {
 
     return { data: members };
 };
-

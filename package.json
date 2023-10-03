@@ -19,7 +19,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsc src/index.ts",
     "start": "node .",
     "build": "tsup src/index.ts --minify",
     "format": "prettier --write \"**/*.{json,ts}\"",
@@ -41,8 +41,8 @@
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "prettier": "^2.8.8",
-    "tsup": "^6.7.0",
-    "tsx": "^3.12.7",
+    "tsup": "^7.2.0",
+    "tsx": "^3.13.0",
     "typescript": "^5.1.3"
   }
 }
