@@ -6,7 +6,7 @@ export const createEvent = async (data: Omit<Event, "id">) => {
         .create({
             data,
         })
-        .catch((err) => {
+        .catch((err: { message: string }) => {
             throw new Error("encountered error creating event: " + err.message);
         });
 
@@ -16,7 +16,7 @@ export const createEvent = async (data: Omit<Event, "id">) => {
 export const updateEvent = async (id: string, newData: Omit<Event, "id">) => {
     const event = await prisma.event
         .update({ where: { id }, data: newData })
-        .catch((err) => {
+        .catch((err: { message: string }) => {
             throw new Error("encountered error updating event: " + err.message);
         });
 
@@ -28,7 +28,7 @@ export const getEvent = async (id: string) => {
         .findFirst({
             where: { id },
         })
-        .catch((err) => {
+        .catch((err: { message: string }) => {
             throw new Error("encountered error getting event: " + err.message);
         });
 
@@ -36,9 +36,11 @@ export const getEvent = async (id: string) => {
 };
 
 export const getAllEvents = async () => {
-    const events = await prisma.event.findMany().catch((err) => {
-        throw new Error("encountered error getting events: " + err.message);
-    });
+    const events = await prisma.event
+        .findMany()
+        .catch((err: { message: string }) => {
+            throw new Error("encountered error getting events: " + err.message);
+        });
 
     return { data: events };
 };
