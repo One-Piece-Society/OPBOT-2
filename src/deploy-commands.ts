@@ -4,7 +4,7 @@ import { commands } from "./commands/command-list";
 
 const commandsData = Object.values(commands).map((command) => command.data);
 
-const rest = new REST({ version: "10" }).setToken(config.DISCORD_TOKEN);
+const rest = new REST({ version: "9" }).setToken(config.DISCORD_TOKEN);
 
 type DeployCommandsProps = {
     guildId: string;

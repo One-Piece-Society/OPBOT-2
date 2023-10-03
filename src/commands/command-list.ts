@@ -1,19 +1,22 @@
 import * as ping from "../interactions/ping";
+import * as pong from "../interactions/pong";
 import * as about from "../interactions/about";
-import * as delayPost from "../interactions/delaypost";
-import * as getEvents from "../interactions/events-list";
+import * as delaypost from "../interactions/delaypost";
+import * as allevents from "../interactions/allevents";
 
 /**
  * List of commands that are available as interactions in Discord
+ * Command name should be the exact same as file name
  */
 export const userCommands = {
     ping,
     about,
+    pong,
 };
 
 export const adminCommands = {
-    delayPost,
-    getEvents,
+    allevents,
+    delaypost,
 };
 
 export const commands = {

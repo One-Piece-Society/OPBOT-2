@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { deployCommands } from "./deploy-commands";
 import { adminCommands, userCommands } from "./commands/command-list";
 import { config } from "./config";
@@ -9,6 +9,7 @@ import { isAdmin } from "./functions/permissions";
  * the bot will receive information about.
  */
 const client = new Client({
+    partials: [Partials.Channel, Partials.User, Partials.Message],
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
