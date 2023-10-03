@@ -21,11 +21,10 @@ export async function execute(interaction: CommandInteraction) {
     let reply = "";
     cleanedResponse.forEach((event) => {
         reply = reply.concat(
-            `**${event.title}:**\n**event id: **${event.id}\n${event.link}\n\n`
+            `**${event.title}:**\n**event id: **${event.id}\n<${event.link}>\n\n`
         );
     });
-    return interaction.reply({
-        content: `Here are all the One Piece Society Events:\n\n\n${reply}`,
-        embeds: [],
-    });
+    return interaction.reply(
+        `Here are all the One Piece Society Events:\n\n\n${reply}`
+    );
 }
