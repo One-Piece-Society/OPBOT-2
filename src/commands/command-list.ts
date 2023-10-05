@@ -1,5 +1,4 @@
 import * as ping from "../interactions/ping";
-import * as pong from "../interactions/pong";
 import * as about from "../interactions/about";
 import * as delaypost from "../interactions/delaypost";
 import * as allevents from "../interactions/allevents";
@@ -11,7 +10,6 @@ import * as allevents from "../interactions/allevents";
 export const userCommands = {
     ping,
     about,
-    pong,
 };
 
 export const adminCommands = {
