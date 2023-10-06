@@ -23,12 +23,6 @@ model Event {
   Panel        EventPanel[]
 }
 
-model ImagePanel {
-  id       String        @id @default(cuid())
-  position PanelPosition @unique
-  image    String
-}
-
 model EventPanel {
   id       String        @id @default(cuid())
   position PanelPosition @unique
@@ -45,14 +39,6 @@ model Team {
   position String
   order    Int      @default(9999)
   year     Int
-}
-
-model Social {
-  id              String @id @default(cuid())
-  name            String
-  backgroundImage String
-  logo            String
-  link            String
 }
 
 enum TeamType {
